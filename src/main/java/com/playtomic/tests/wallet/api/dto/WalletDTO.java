@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.dto;
+package com.playtomic.tests.wallet.api.dto;
 
 import java.math.BigDecimal;
 import java.util.UUID;

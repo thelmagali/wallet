@@ -1,10 +1,10 @@
-package com.playtomic.tests.wallet.api.error;
+package com.playtomic.tests.wallet.api.exception;
 
 public class ErrorResponse {
     private final int status;
     private final String message;
 
-    public ErrorResponse(final int status, final String message) {
+    public ErrorResponse(int status, String message) {
         this.status = status;
         this.message = message;
     }

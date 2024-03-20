@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.api.error;
+package com.playtomic.tests.wallet.api.exception;
 
 import com.playtomic.tests.wallet.service.exception.WalletNotFoundException;
 import org.springframework.http.HttpStatus;

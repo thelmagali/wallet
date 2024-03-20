@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.service;
+package com.playtomic.tests.wallet.service.stripe.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,5 +12,9 @@ public class Payment {
     @JsonCreator
     public Payment(@JsonProperty(value = "id", required = true) String id) {
         this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 }
