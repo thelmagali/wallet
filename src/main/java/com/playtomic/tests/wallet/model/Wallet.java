@@ -18,7 +18,7 @@ public class Wallet {
     private Long id;
 
     @Column(updatable = false, nullable = false, unique = true)
-    private String uuid = UUID.randomUUID().toString();
+    private String uuid;
 
     @Column(precision = 19, scale = 2)
     private BigDecimal balance;
@@ -45,5 +45,10 @@ public class Wallet {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public Wallet(BigDecimal balance) {
+        this.balance = balance;
+        this.uuid = UUID.randomUUID().toString();
     }
 }

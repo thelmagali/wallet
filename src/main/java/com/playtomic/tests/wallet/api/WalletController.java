@@ -2,7 +2,7 @@ package com.playtomic.tests.wallet.api;
 
 import com.playtomic.tests.wallet.api.dto.DepositRequest;
 import com.playtomic.tests.wallet.api.dto.DepositResponse;
-import com.playtomic.tests.wallet.api.dto.WalletDTO;
+import com.playtomic.tests.wallet.api.dto.WalletResponse;
 import com.playtomic.tests.wallet.service.DepositService;
 import com.playtomic.tests.wallet.service.WalletService;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,9 @@ public class WalletController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<WalletDTO> getWalletByUuid(@PathVariable String uuid) {
-        WalletDTO walletDTO = walletService.getWalletDTO(uuid);
-        return ResponseEntity.ok(walletDTO);
+    public ResponseEntity<WalletResponse> getWalletByUuid(@PathVariable String uuid) {
+        WalletResponse walletResponse = walletService.getWalletDTO(uuid);
+        return ResponseEntity.ok(walletResponse);
     }
 
     @PostMapping("/{uuid}/deposits")

@@ -1,7 +1,7 @@
 package com.playtomic.tests.wallet.service;
 
 import com.playtomic.tests.wallet.api.dto.DepositRequest;
-import com.playtomic.tests.wallet.api.dto.WalletDTO;
+import com.playtomic.tests.wallet.api.dto.WalletResponse;
 import com.playtomic.tests.wallet.mapper.WalletConverter;
 import com.playtomic.tests.wallet.model.Wallet;
 import com.playtomic.tests.wallet.repository.WalletRepository;
@@ -20,7 +20,7 @@ public class WalletService {
         this.walletConverter = walletConverter;
     }
 
-    public WalletDTO getWalletDTO(@NonNull String uuid) {
+    public WalletResponse getWalletDTO(@NonNull String uuid) {
         final var walletEntity = getWallet(uuid);
         return walletConverter.entityToDto(walletEntity);
     }
