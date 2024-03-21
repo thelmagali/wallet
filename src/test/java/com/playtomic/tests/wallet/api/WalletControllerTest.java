@@ -55,7 +55,7 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testGetWalletByUuid_shouldReturnNotFound_whenWalletDoesNotExist() throws Exception {
+    public void getWalletByUuid_shouldReturnNotFound_whenWalletDoesNotExist() throws Exception {
         when(walletService.getWalletDTO(walletUuid.toString())).thenThrow(WalletNotFoundException.class);
 
         mockMvc.perform(get("/api/wallets/" + walletUuid))
@@ -63,7 +63,7 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testGetWalletByUuid_shouldReturnInternalServerError_forAnyOtherException() throws Exception {
+    public void getWalletByUuid_shouldReturnInternalServerError_forAnyOtherException() throws Exception {
         when(walletService.getWalletDTO(walletUuid.toString())).thenThrow(RuntimeException.class);
 
         mockMvc.perform(get("/api/wallets/" + walletUuid))
@@ -71,7 +71,7 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testDepositAmount_shouldReturnDepositData_whenDataIsCorrect() throws Exception {
+    public void depositAmount_shouldReturnDepositData_whenDataIsCorrect() throws Exception {
         final var depositResponse = new DepositResponse(UUID.randomUUID(), new BigDecimal("50.00"));
         when(depositService.deposit(walletUuid.toString(), depositRequest)).thenReturn(depositResponse);
 
@@ -84,7 +84,7 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testDepositAmount_shouldReturnNotFound_whenWalletNotFound() throws Exception {
+    public void depositAmount_shouldReturnNotFound_whenWalletNotFound() throws Exception {
         when(depositService.deposit(walletUuid.toString(), depositRequest)).thenThrow(WalletNotFoundException.class);
 
         mockMvc.perform(post("/api/wallets/" + walletUuid + "/deposits")
@@ -94,7 +94,7 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testDepositAmount_shouldReturnInternalServerError_forAnyException() throws Exception {
+    public void depositAmount_shouldReturnInternalServerError_forAnyException() throws Exception {
         when(depositService.deposit(walletUuid.toString(), depositRequest)).thenThrow(RuntimeException.class);
 
         mockMvc.perform(post("/api/wallets/" + walletUuid + "/deposits")

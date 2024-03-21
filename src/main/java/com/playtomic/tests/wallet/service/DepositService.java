@@ -3,6 +3,7 @@ package com.playtomic.tests.wallet.service;
 import com.playtomic.tests.wallet.api.dto.DepositRequest;
 import com.playtomic.tests.wallet.api.dto.DepositResponse;
 import com.playtomic.tests.wallet.api.exception.GlobalExceptionHandler;
+import com.playtomic.tests.wallet.mapper.DepositConverter;
 import com.playtomic.tests.wallet.model.Wallet;
 import com.playtomic.tests.wallet.service.stripe.StripeService;
 import com.playtomic.tests.wallet.service.stripe.dto.Payment;
@@ -18,11 +19,13 @@ public class DepositService {
     private final StripeService stripeService;
     private final DepositWriter depositWriter;
     private final WalletService walletService;
+    private final DepositConverter depositConverter;
 
-    public DepositService(StripeService stripeService, DepositWriter depositWriter, WalletService walletService) {
+    public DepositService(StripeService stripeService, DepositWriter depositWriter, WalletService walletService, DepositConverter depositConverter) {
         this.stripeService = stripeService;
         this.depositWriter = depositWriter;
         this.walletService = walletService;
+        this.depositConverter = depositConverter;
     }
 
     public DepositResponse deposit(@NonNull String walletUuid, @NonNull DepositRequest depositRequest) {
@@ -35,7 +38,8 @@ public class DepositService {
     public DepositResponse registerDepositOrRefundCard(Wallet wallet, DepositRequest depositRequest, Payment stripePayment) {
         try {
             walletService.topUpBalance(depositRequest, wallet);
-            return depositWriter.saveDeposit(wallet, depositRequest, stripePayment);
+            final var savedDeposit = depositWriter.saveDeposit(wallet, depositRequest, stripePayment);
+            return depositConverter.entityToResponse(savedDeposit);
         } catch (Exception e) {
             logger.error("Could not register the deposit [WalletId: {}, Amount: {}, StripePaymentId: {}]. Refunding.",
                     wallet.getId(), depositRequest.getAmount(), stripePayment.getId());

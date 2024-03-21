@@ -1,8 +1,6 @@
 package com.playtomic.tests.wallet.service;
 
 import com.playtomic.tests.wallet.api.dto.DepositRequest;
-import com.playtomic.tests.wallet.api.dto.DepositResponse;
-import com.playtomic.tests.wallet.mapper.DepositConverter;
 import com.playtomic.tests.wallet.model.Deposit;
 import com.playtomic.tests.wallet.model.StripeDeposit;
 import com.playtomic.tests.wallet.model.Wallet;
@@ -17,19 +15,17 @@ import org.springframework.stereotype.Service;
 public class DepositWriter {
     private final DepositRepository depositRepository;
     private final StripeDepositRepository stripeDepositRepository;
-    private final DepositConverter depositConverter;
 
-    public DepositWriter(DepositRepository depositRepository, StripeDepositRepository stripeDepositRepository, DepositConverter depositConverter) {
+    public DepositWriter(DepositRepository depositRepository, StripeDepositRepository stripeDepositRepository) {
         this.depositRepository = depositRepository;
         this.stripeDepositRepository = stripeDepositRepository;
-        this.depositConverter = depositConverter;
     }
 
     @Transactional
-    public DepositResponse saveDeposit(Wallet wallet, DepositRequest depositRequest, Payment stripePayment) {
+    public Deposit saveDeposit(Wallet wallet, DepositRequest depositRequest, Payment stripePayment) {
         final var internalDeposit = saveInternalDeposit(depositRequest.getAmount(), wallet.getId());
         saveStripeDeposit(depositRequest, stripePayment.getId(), internalDeposit);
-        return depositConverter.entityToResponse(internalDeposit);
+        return internalDeposit;
     }
 
     private void saveStripeDeposit(DepositRequest depositRequest, String paymentId, Deposit savedDeposit) {

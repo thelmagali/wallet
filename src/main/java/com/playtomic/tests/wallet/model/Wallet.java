@@ -1,5 +1,6 @@
 package com.playtomic.tests.wallet.model;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,14 @@ public class Wallet {
 
     @Column(precision = 19, scale = 2)
     private BigDecimal balance;
+
+    public Wallet() {
+    }
+
+    public Wallet(BigDecimal balance) {
+        this.balance = balance;
+        this.uuid = UUID.randomUUID().toString();
+    }
 
     public Long getId() {
         return id;
@@ -47,8 +56,16 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public Wallet(BigDecimal balance) {
-        this.balance = balance;
-        this.uuid = UUID.randomUUID().toString();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Wallet)) return false;
+        Wallet wallet = (Wallet) o;
+        return Objects.equals(getId(), wallet.getId()) && Objects.equals(getUuid(), wallet.getUuid()) && Objects.equals(getBalance(), wallet.getBalance());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUuid(), getBalance());
     }
 }
