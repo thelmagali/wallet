@@ -60,9 +60,9 @@ public class StripeService {
      * @throws StripeServiceException
      */
     public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
-//        ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
-//        return restTemplate.postForObject(chargesUri, body, Payment.class);
-        final var payment = new Payment(UUID.randomUUID().toString());
+        ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
+        final var payment = restTemplate.postForObject(chargesUri, body, Payment.class);
+        assert payment != null;
         logger.info("Charged the stripe payment {}", payment.getId());
         return payment;
     }
@@ -71,8 +71,8 @@ public class StripeService {
      * Refunds the specified payment.
      */
     public void refund(@NonNull String paymentId) throws StripeServiceException {
-        // Object.class because we don't read the body here.
-        // restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        //  Object.class because we don't read the body here.
+        restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
         logger.info("Refunding the payment {}", paymentId);
     }
 
