@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DepositConverter {
 
-    public DepositResponse entityToResponse(Deposit deposit, UUID walletUuid) {
-        return new DepositResponse(UUID.fromString(deposit.getUuid()), walletUuid, deposit.getAmount());
+    public DepositResponse entityToResponse(Deposit deposit) {
+        return new DepositResponse(UUID.fromString(deposit.getUuid()), deposit.getAmount());
     }
 }

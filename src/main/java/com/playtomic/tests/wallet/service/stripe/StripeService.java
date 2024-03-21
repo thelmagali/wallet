@@ -1,11 +1,15 @@
 package com.playtomic.tests.wallet.service.stripe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.playtomic.tests.wallet.api.exception.GlobalExceptionHandler;
 import com.playtomic.tests.wallet.service.stripe.dto.Payment;
 import com.playtomic.tests.wallet.service.stripe.exception.StripeRestTemplateResponseErrorHandler;
 import com.playtomic.tests.wallet.service.stripe.exception.StripeServiceException;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ import java.net.URI;
  */
 @Service
 public class StripeService {
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @NonNull
     private URI chargesUri;
@@ -55,8 +60,11 @@ public class StripeService {
      * @throws StripeServiceException
      */
     public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
-        ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
-        return restTemplate.postForObject(chargesUri, body, Payment.class);
+//        ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
+//        return restTemplate.postForObject(chargesUri, body, Payment.class);
+        final var payment = new Payment(UUID.randomUUID().toString());
+        logger.info("Charged the stripe payment {}", payment.getId());
+        return payment;
     }
 
     /**
@@ -64,7 +72,8 @@ public class StripeService {
      */
     public void refund(@NonNull String paymentId) throws StripeServiceException {
         // Object.class because we don't read the body here.
-        restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        // restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        logger.info("Refunding the payment {}", paymentId);
     }
 
     @AllArgsConstructor

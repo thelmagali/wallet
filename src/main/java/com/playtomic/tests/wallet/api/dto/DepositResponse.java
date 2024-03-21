@@ -4,22 +4,16 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class DepositResponse {
-    private final UUID uuid;
-    private final UUID walletUuid;
+    private final UUID depositUuid;
     private final BigDecimal amount;
 
-    public DepositResponse(UUID uuid, UUID walletUuid, BigDecimal amount) {
-        this.uuid = uuid;
-        this.walletUuid = walletUuid;
+    public DepositResponse(UUID depositUuid, BigDecimal amount) {
+        this.depositUuid = depositUuid;
         this.amount = amount;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public UUID getWalletUuid() {
-        return walletUuid;
+    public UUID getDepositUuid() {
+        return depositUuid;
     }
 
     public BigDecimal getAmount() {
