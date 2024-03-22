@@ -33,6 +33,9 @@ public class WalletService {
     @Transactional
     public void topUpBalance(DepositRequest depositRequest, Wallet wallet) {
         final var newBalance = wallet.getBalance().add(depositRequest.getAmount());
-        walletRepository.updateWalletBalance(newBalance, wallet.getId(), wallet.getBalance());
+        final var affectedRows = walletRepository.updateWalletBalance(newBalance, wallet.getId(), wallet.getBalance());
+        if (affectedRows == 0) {
+            throw new RuntimeException("Could not update the wallet's balance");
+        }
     }
 }
