@@ -3,13 +3,17 @@ package com.playtomic.tests.wallet.api.dto;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 public class DepositRequest {
     @NotBlank(message = "Credit card number cannot be blank")
     @CreditCardNumber(message = "Invalid credit card number")
     private final String creditCardNumber;
+    @NotNull(message = "Amount expected")
     private final BigDecimal amount;
+    @NotNull(message = "Current balance expected")
     private final BigDecimal currentBalance;
 
     public DepositRequest(String creditCardNumber, BigDecimal amount, BigDecimal currentBalance) {
