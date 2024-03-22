@@ -42,10 +42,10 @@ public class WalletControllerTest {
     private ObjectMapper objectMapper;
     private final UUID walletUuid = UUID.randomUUID();
     private final WalletResponse walletResponse = new WalletResponse(walletUuid, new BigDecimal("100.00"));
-    private final DepositRequest depositRequest = new DepositRequest("1234567890123456", new BigDecimal("50.00"));
+    private final DepositRequest depositRequest = new DepositRequest("36070500001020", new BigDecimal("50.00"), new BigDecimal("100.00"));
 
     @Test
-    public void testGetWalletByUuid_shouldReturnWallet_whenWalletExists() throws Exception {
+    public void getWalletByUuid_shouldReturnWallet_whenWalletExists() throws Exception {
         when(walletService.getWalletDTO(walletUuid.toString())).thenReturn(walletResponse);
 
         mockMvc.perform(get("/api/wallets/" + walletUuid))

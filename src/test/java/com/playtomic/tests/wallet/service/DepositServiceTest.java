@@ -35,7 +35,7 @@ public class DepositServiceTest {
     @InjectMocks
     private DepositService depositService;
     private final Wallet wallet = new Wallet(new BigDecimal("100.00"));
-    private final DepositRequest depositRequest = new DepositRequest("1234567890123456", new BigDecimal("50.00"));
+    private final DepositRequest depositRequest = new DepositRequest("1234567890123456", new BigDecimal("50.00"), new BigDecimal("100.00"));
     private final Payment stripePayment = new Payment("stripePaymentId", depositRequest.getAmount());
     private final Deposit deposit = mock(Deposit.class);
     private final DepositResponse depositResponse = new DepositResponse(UUID.randomUUID(), depositRequest.getAmount());

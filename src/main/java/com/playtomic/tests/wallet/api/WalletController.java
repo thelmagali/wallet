@@ -5,6 +5,7 @@ import com.playtomic.tests.wallet.api.dto.DepositResponse;
 import com.playtomic.tests.wallet.api.dto.WalletResponse;
 import com.playtomic.tests.wallet.service.DepositService;
 import com.playtomic.tests.wallet.service.WalletService;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class WalletController {
     }
 
     @PostMapping("/{uuid}/deposits")
-    public ResponseEntity<DepositResponse> depositAmount(@PathVariable String uuid, @RequestBody DepositRequest depositRequest) {
+    public ResponseEntity<DepositResponse> depositAmount(@PathVariable String uuid, @RequestBody @Valid DepositRequest depositRequest) {
         DepositResponse result = depositService.deposit(uuid, depositRequest);
         return ResponseEntity.ok(result);
     }

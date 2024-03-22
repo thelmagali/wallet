@@ -1,10 +1,17 @@
 package com.playtomic.tests.wallet.api.exception;
 
+import com.playtomic.tests.wallet.service.exception.BalanceNotMatchingException;
 import com.playtomic.tests.wallet.service.exception.WalletNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,20 +21,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllExceptions(final Exception ex) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorResponse handleAllExceptions(final Exception ex) {
         logger.error("ERROR: ", ex);
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ErrorResponse(ex.getMessage());
     }
 
     @ExceptionHandler(WalletNotFoundException.class)
-    public ResponseEntity<Object> handleWalletNotFoundException(final WalletNotFoundException ex) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleWalletNotFoundException(final WalletNotFoundException ex) {
         logger.error("Wallet not found: ", ex);
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    @ExceptionHandler(BalanceNotMatchingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleBalanceNotMatching(final BalanceNotMatchingException ex) {
+        logger.error("Balance does not match: ", ex);
+        return new ErrorResponse(ex.getMessage());
     }
 }

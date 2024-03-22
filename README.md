@@ -21,8 +21,9 @@ curl --location 'localhost:8090/api/wallets/123e4567-e89b-12d3-a456-426614174000
 curl --location 'localhost:8090/api/wallets/123e4567-e89b-12d3-a456-426614174000/deposits' \
 --header 'Content-Type: application/json' \
 --data '{
-"creditCardNumber": "9283247273",
-"amount": 2000
+    "creditCardNumber": "36070500001020",
+    "amount": 2000,
+    "currentBalance": 4100
 }'
 
 ```

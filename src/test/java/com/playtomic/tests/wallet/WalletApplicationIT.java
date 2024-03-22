@@ -58,7 +58,7 @@ public class WalletApplicationIT {
 	public void testDepositAmount() throws Exception {
 		mockMvc.perform(post("/api/wallets/{uuid}/deposits", wallet.getUuid())
 						.contentType(APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(new DepositRequest("1234567890123456", new BigDecimal("50.00")))))
+						.content(objectMapper.writeValueAsString(new DepositRequest("36070500001020", new BigDecimal("50.00"), new BigDecimal("100.00")))))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.depositUuid").isNotEmpty())
 				.andExpect(jsonPath("$.amount").value(50.00));

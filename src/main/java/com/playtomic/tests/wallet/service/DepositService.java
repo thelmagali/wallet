@@ -5,6 +5,7 @@ import com.playtomic.tests.wallet.api.dto.DepositResponse;
 import com.playtomic.tests.wallet.api.exception.GlobalExceptionHandler;
 import com.playtomic.tests.wallet.mapper.DepositConverter;
 import com.playtomic.tests.wallet.model.Wallet;
+import com.playtomic.tests.wallet.service.exception.BalanceNotMatchingException;
 import com.playtomic.tests.wallet.service.stripe.StripeService;
 import com.playtomic.tests.wallet.service.stripe.dto.Payment;
 import javax.transaction.Transactional;
@@ -30,6 +31,7 @@ public class DepositService {
 
     public DepositResponse deposit(@NonNull String walletUuid, @NonNull DepositRequest depositRequest) {
         final var wallet = walletService.getWallet(walletUuid);
+        validateCurrentBalance(wallet, depositRequest);
         final var stripePaymentResponse = stripeService.charge(depositRequest.getCreditCardNumber(), depositRequest.getAmount());
         return registerDepositOrRefundCard(wallet, depositRequest, stripePaymentResponse);
     }
@@ -45,6 +47,12 @@ public class DepositService {
                     wallet.getId(), depositRequest.getAmount(), stripePayment.getId());
             stripeService.refund(stripePayment.getId());
             throw e;
+        }
+    }
+
+    private void validateCurrentBalance(Wallet wallet, DepositRequest depositRequest) {
+        if (!(wallet.getBalance().doubleValue() == depositRequest.getCurrentBalance().doubleValue())) {
+            throw new BalanceNotMatchingException(wallet.getUuid(), depositRequest.getCurrentBalance(), wallet.getBalance());
         }
     }
 }
